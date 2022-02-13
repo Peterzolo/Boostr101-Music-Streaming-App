@@ -1,5 +1,5 @@
 const { UNPROCESSABLE_ENTITY, NOT_FOUND } = require("http-status-codes");
-const { AppError } = require("../../library/helpers/errorFormatHelpers");
+const { AppError } = require("../utils/helper/errorFormatHelpers");
 
 module.exports = {
   InvalidInput: (
@@ -25,6 +25,13 @@ module.exports = {
   ActionFailed: (
     content = {},
     message = "Action failed",
+    name = null,
+    innerException = null
+  ) =>
+    new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
+     UserExists: (
+    content = {},
+    message = "User with this email already exists",
     name = null,
     innerException = null
   ) =>
