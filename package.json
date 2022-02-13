@@ -1,0 +1,31 @@
+{
+  "name": "musiic-streaming-app",
+  "version": "1.0.0",
+  "description": "An app to listen to and download music",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peterzolo/Boostr101-Music-Streaming-App.git"
+  },
+  "author": "Peter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Peterzolo/Boostr101-Music-Streaming-App/issues"
+  },
+  "homepage": "https://github.com/Peterzolo/Boostr101-Music-Streaming-App#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "joi": "^17.6.0",
+    "joi-password-complexity": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
+    "morgan": "^1.10.0"
+  }
+}
