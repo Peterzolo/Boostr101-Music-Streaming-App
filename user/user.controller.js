@@ -8,6 +8,7 @@ const res = require("express/lib/response");
 exports.registerUser = async (req, res) => {
   try {
     const userObject = {
+      status: req.body.status,
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
@@ -77,6 +78,23 @@ exports.logInUser = async (req, res) => {
   }
 };
 
-exports.getUsers = (req, res) => {
-  res.send("Get users works");
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find({ status: "active" }).select("-password");
+    if (!users.length) {
+      throw userError.NotFound();
+    }
+    res.status(200).json({
+      success: true,
+      data: users,
+      message: "Users successfully found",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error occured", error });
+  }
 };
+
+exports.getUser = async ()=>{
+  
+
+}

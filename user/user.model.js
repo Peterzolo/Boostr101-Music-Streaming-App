@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema(
     likedSongs: { type: Array, default: [] },
     playLists: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
   },
   { timestamps: true }
 );
