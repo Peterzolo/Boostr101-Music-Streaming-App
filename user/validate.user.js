@@ -1,17 +1,29 @@
-const Joi = require("joi");
-const passwordComplexity = require("joi-password-complexity");
+const { check, validationResult } = require("express-validator");
 
-exports.validate = (user) => {
-  const schema = Joi.object({
-    name: Joi.string().min(5).max(10).required(),
-    email: Joi.string().email().required(),
-    password: passwordComplexity().required(),
-    month: Joi.string().required(),
-    date: Joi.string().required(),
-    year: Joi.string().required(),
-    gender: Joi.string().valid("male", "female", "non-binary").required(),
-  });
-  return schema.validate(user);
+exports.validateUser = [
+  check("name")
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage("Nanme field cannot be empty")
+    .isLength({ min: 3, max: 20 })
+    .withMessage("Name should be at least 3 to 20 characters long"),
+  check("email")
+    .exists()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Not valid email"),
+  check("password")
+    .not()
+    .isEmpty()
+    .withMessage("Password field cannot be empty")
+    .isLength({ min: 8, max: 15 })
+    .withMessage("Password must be bwteen 8 and 15 characters long"),
+];
+
+exports.validate = (req, res, next) => {
+  const error = validationResult(req).array();
+  if (!error.length) return next();
+
+  res.status(402).json({ success: false, error: error[0].msg });
 };
-
-// module.exports = validate;

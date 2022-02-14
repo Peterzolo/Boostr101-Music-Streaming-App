@@ -49,7 +49,7 @@ exports.logInUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: body.email });
     if (!user) {
-      throw userError.ActionFailed();
+      throw userError.InvalidInput();
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -65,7 +65,7 @@ exports.logInUser = async (req, res) => {
       email: user.email,
       name: user.name,
     });
-     const { password, ...others} = user._doc
+    const { password, ...others } = user._doc;
     res.status(201).send({
       Success: true,
       AccessToken: token,
