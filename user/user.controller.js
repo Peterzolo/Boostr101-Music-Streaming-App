@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { User, validate } = require("./user.model");
 
 const { generateToken } = require("../utils/middleware/jwtToken");
+const res = require("express/lib/response");
 
 exports.registerUser = async (req, res) => {
   try {
@@ -74,4 +75,8 @@ exports.logInUser = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+};
+
+exports.getUsers = (req, res) => {
+  res.send("Get users works");
 };
