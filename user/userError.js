@@ -4,7 +4,7 @@ const { AppError } = require("../utils/helper/errorFormatHelpers");
 module.exports = {
   InvalidInput: (
     content = {},
-    message = "Invalid form inputs",
+    message = "Invalid credential",
     name = null,
     innerException = null
   ) =>
@@ -29,7 +29,7 @@ module.exports = {
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
-     UserExists: (
+  UserExists: (
     content = {},
     message = "User with this email already exists",
     name = null,

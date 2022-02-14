@@ -1,13 +1,10 @@
 const userError = require("./userError");
+const bcrypt = require("bcryptjs");
+const { User, validate } = require("./user.model");
 
-const User = require("./user.model");
-const { validate } = require("./user.model");
 const { generateToken } = require("../utils/middleware/jwtToken");
 
 exports.registerUser = async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send({ message: error.details[0].message });
-
   try {
     const userObject = {
       name: req.body.name,
@@ -33,11 +30,46 @@ exports.registerUser = async (req, res) => {
 
     const token = generateToken({ id: savedData._id, email: savedData.email });
 
+    const { password, ...others } = savedData._doc;
+
     res.status(200).send({
       success: true,
       accessToken: token,
-      content: savedData,
+      content: others,
       message: "User successfully added",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+exports.logInUser = async (req, res) => {
+  // const { email, password } = req.body;
+  const body = req.body;
+  try {
+    const user = await User.findOne({ email: body.email });
+    if (!user) {
+      throw userError.ActionFailed();
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(body.password, salt);
+
+    const isValidPassword = await bcrypt.compare(body.password, user.password);
+    if (!isValidPassword) {
+      throw userError.InvalidInput();
+    }
+
+    const token = generateToken({
+      id: user._id,
+      email: user.email,
+      name: user.name,
+    });
+     const { password, ...others} = user._doc
+    res.status(201).send({
+      Success: true,
+      AccessToken: token,
+      others,
     });
   } catch (error) {
     res.status(500).send(error);

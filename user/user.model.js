@@ -16,8 +16,8 @@ const UserSchema = new mongoose.Schema(
     date: { type: Date, default: Date.now() },
     year: { type: Number },
     genre: { type: String, default: "" },
-    likedSongs: { type: [String], default: [] },
-    playLists: { type: [String], default: [] },
+    likedSongs: { type: Array, default: [] },
+    playLists: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }
@@ -38,19 +38,18 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
-// const validate = (user) => {
-//   const schema = Joi.object({
-//     name: Joi.string().min(5).max(10).required(),
-//     email: Joi.string().email().required(),
-//     password: passwordComplexity().required(),
-//     month: Joi.string().required(),
-//     date: Joi.string().required(),
-//     year: Joi.string().required(),
-//     gender: Joi.string().required(),
-//   });
-//   return schema.validate(user);
-// };
+const validate = (user) => {
+  const schema = Joi.object({
+    name: Joi.string().min(5).max(10).required(),
+    email: Joi.string().email().required(),
+    password: passwordComplexity().required(),
+    month: Joi.string().required(),
+    year: Joi.string().required(),
+    gender: Joi.string().required(),
+  });
+  return schema.validate(user);
+};
 
 const User = mongoose.model("user", UserSchema);
 
-module.exports = User;
+module.exports = { User, validate };
