@@ -6,6 +6,7 @@ const {
   getUsers,
   getUser,
   deleteUser,
+  updateUser,
 } = require("./user.controller");
 const { validateUser, validate } = require("./validate.user");
 
@@ -16,5 +17,6 @@ userRouter.route("/login").post(logInUser);
 userRouter.route("/get-all").get(getUsers);
 userRouter.route("/get-one").get(authorize, getUser);
 userRouter.route("/remove").delete(authorize, deleteUser);
+userRouter.route("/edit").put(authorize, updateUser);
 
 module.exports = userRouter;

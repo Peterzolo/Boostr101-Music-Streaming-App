@@ -135,3 +135,28 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: "Could not fetch user", error });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+    let email = req.user.email;
+    const editObject = req.body
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw userError.NotFound();
+    }
+    const query = email;
+    const update = editObject;
+    const updatedUser = await User.findOneAndUpdate(
+      { email: query },
+      { $set: update },
+      { new: true }
+    );
+    res.status(202).json({
+      success: true,
+      message: "Successfully updated user",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Could not fetch user", error });
+  }
+};
