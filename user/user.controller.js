@@ -98,7 +98,7 @@ exports.getUser = async (req, res) => {
   try {
     let email = req.user.email;
     console.log("User email", email);
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ status: "active", email });
     if (!user) {
       throw new Error("User not found");
     }
@@ -108,6 +108,29 @@ exports.getUser = async (req, res) => {
       data: user,
     });
     console.log("USER RESPONSE", user);
+  } catch (error) {
+    res.status(500).json({ message: "Could not fetch user", error });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    let email = req.user.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw userError.NotFound();
+    }
+    const query = email;
+    const deletedUser = await User.findOneAndUpdate(
+      { email: query },
+      { $set: { status: "inactive" } },
+      { new: true }
+    );
+    res.status(202).json({
+      success: true,
+      message: "Successfully deleted user",
+      user: deletedUser,
+    });
   } catch (error) {
     res.status(500).json({ message: "Could not fetch user", error });
   }
