@@ -117,3 +117,9 @@ exports.signInUser = async (email, password) => {
     token,
   };
 };
+
+
+exports.fetchAllUsers = async() =>{
+  const allUsers = await User.find({status : 'active'}).select('-password');
+  return allUsers;
+}
