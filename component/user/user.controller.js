@@ -1,6 +1,7 @@
 const userError = require("./userError");
 const bcrypt = require("bcryptjs");
 const userService = require("./user.service");
+const { validationResult } = require("express-validator");
 
 exports.registerUser = async (req, res) => {
   let {
@@ -55,6 +56,27 @@ exports.registerUser = async (req, res) => {
       res.status(500).send(error);
     }
 };
+
+
+
+exports.logInUser = async(req, res) =>{
+
+  
+    const {email, password} = req.body;
+    try {
+
+        const user = await userService.signInUser(email, password);
+
+        res.status(200).json({
+            success : true,
+            message : 'User logged in successffully',     
+            content: user
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }  
+
+}
 
 // exports.logInUser = async (req, res) => {
 //   const body = req.body;

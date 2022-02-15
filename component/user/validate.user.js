@@ -34,7 +34,7 @@ exports.validateLogin = [
     .withMessage("Password must be bwteen 8 and 15 characters long"),
 ];
 
-exports.validate = (req, res, next) => {
+exports.validateRes = (req, res, next) => {
   const error = validationResult(req).array();
   if (!error.length) return next();
 
