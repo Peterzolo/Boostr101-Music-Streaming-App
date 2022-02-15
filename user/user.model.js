@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema(
@@ -19,7 +20,18 @@ const UserSchema = new mongoose.Schema(
     year: { type: Number },
     genre: { type: String, default: "" },
     likedSongs: { type: Array, default: [] },
-    playLists: { type: Array, default: [] },
+    song: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "song",
+      },
+    ],
+    playLists: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "playList",
+      },
+    ],
     isAdmin: { type: Boolean, default: false },
     status: {
       type: String,

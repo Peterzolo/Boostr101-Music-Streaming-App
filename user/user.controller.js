@@ -1,7 +1,6 @@
 const userError = require("./userError");
 const bcrypt = require("bcryptjs");
 const { User, validate } = require("./user.model");
-
 const { generateToken } = require("../utils/middleware/jwtToken");
 const res = require("express/lib/response");
 
@@ -18,6 +17,7 @@ exports.registerUser = async (req, res) => {
       year: req.body.year,
       genre: req.body.genre,
       likedSongs: req.body.likedSongs,
+      song: req.body.song,
       playLists: req.body.playLists,
       isAdmin: req.body.isAdmin,
     };
@@ -139,7 +139,7 @@ exports.deleteUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     let email = req.user.email;
-    const editObject = req.body
+    const editObject = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       throw userError.NotFound();
