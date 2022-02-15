@@ -82,8 +82,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getAUser = async (req, res) => {
   let email = req.user.email;
-  console.log("EMAIL", email);
-  const user = await userService.fetchAuser({email});
+  const user = await userService.fetchAUser({ email });
 
   if (!user) {
     throw userError.NotFound();
@@ -96,25 +95,6 @@ exports.getAUser = async (req, res) => {
     content: foundUser,
   });
 };
-
-// exports.getUser = async (req, res) => {
-//   try {
-//     let email = req.user.email;
-//     console.log("User email", email);
-//     const user = await User.findOne({ status: "active", email });
-//     if (!user) {
-//       throw new Error("User not found");
-//     }
-//     res.status(202).json({
-//       Success: true,
-//       message: "User successfully fetched",
-//       data: user,
-//     });
-//     console.log("USER RESPONSE", user);
-//   } catch (error) {
-//     res.status(500).json({ message: "Could not fetch user", error });
-//   }
-// };
 
 // exports.deleteUser = async (req, res) => {
 //   try {
@@ -163,3 +143,26 @@ exports.getAUser = async (req, res) => {
 //     res.status(500).json({ message: "Could not fetch user", error });
 //   }
 // };
+
+exports.updateUser = async (req, res) => {
+  const email = req.user.email;
+  const updateData = req.body;
+
+  const findUser = await userService.findUser({ email });
+  if (!findUser) {
+    throw userError.NotFound();
+  }
+
+  const query = email;
+  const update = updateData;
+  console.log("QUERY", query);
+  console.log("UPDATE", update);
+
+  const updatedUser = await userService.editUser(query, update);
+
+  res.status(200).json({
+    success: true,
+    message: "User successfully updated",
+    content: updatedUser,
+  });
+};

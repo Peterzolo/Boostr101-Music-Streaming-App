@@ -11,6 +11,11 @@ exports.userExists = async ({ email }) => {
   return existedUser;
 };
 
+exports.findUser = async(query)=>{
+  const user = await User.findOne(query);
+  return user;
+}
+
 exports.userSignUp = async ({
   user,
   name,
@@ -124,7 +129,12 @@ exports.fetchAllUsers = async() =>{
   return allUsers;
 }
 
-exports.fetchAuser = async(payload)=>{
+exports.fetchAUser = async(payload)=>{
   const user = await User.findOne(payload).select('-password');
+ return user;
+}
+
+exports.editUser = async(payload,userObject) =>{
+ const user = await User.findOneAndUpdate(payload,{$set:userObject}, {new : true})
  return user;
 }
