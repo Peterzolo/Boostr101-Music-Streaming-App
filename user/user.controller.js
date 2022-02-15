@@ -94,7 +94,21 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-exports.getUser = async ()=>{
-  
-
-}
+exports.getUser = async (req, res) => {
+  try {
+    let email = req.user.email;
+    console.log("User email", email);
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    res.status(202).json({
+      Success: true,
+      message: "User successfully fetched",
+      data: user,
+    });
+    console.log("USER RESPONSE", user);
+  } catch (error) {
+    res.status(500).json({ message: "Could not fetch user", error });
+  }
+};
