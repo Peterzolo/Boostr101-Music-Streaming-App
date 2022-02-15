@@ -123,3 +123,8 @@ exports.fetchAllUsers = async() =>{
   const allUsers = await User.find({status : 'active'}).select('-password');
   return allUsers;
 }
+
+exports.fetchAuser = async(payload)=>{
+  const user = await User.findOne(payload).select('-password');
+ return user;
+}

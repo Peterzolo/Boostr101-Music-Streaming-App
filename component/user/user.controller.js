@@ -71,7 +71,7 @@ exports.logInUser = async (req, res) => {
   }
 };
 
-exports.getAllusers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   const users = await userService.fetchAllUsers();
   res.status(200).json({
     success: true,
@@ -80,53 +80,22 @@ exports.getAllusers = async (req, res) => {
   });
 };
 
-// exports.logInUser = async (req, res) => {
-//   const body = req.body;
-//   try {
-//     const user = await User.findOne({ email: body.email });
-//     if (!user) {
-//       throw userError.InvalidInput();
-//     }
+exports.getAUser = async (req, res) => {
+  let email = req.user.email;
+  console.log("EMAIL", email);
+  const user = await userService.fetchAuser({email});
 
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(body.password, salt);
+  if (!user) {
+    throw userError.NotFound();
+  }
+  const foundUser = user;
 
-//     const isValidPassword = await bcrypt.compare(body.password, user.password);
-//     if (!isValidPassword) {
-//       throw userError.InvalidInput();
-//     }
-
-//     const token = generateToken({
-//       id: user._id,
-//       email: user.email,
-//       name: user.name,
-//     });
-//     const { password, ...others } = user._doc;
-//     res.status(201).send({
-//       Success: true,
-//       AccessToken: token,
-//       others,
-//     });
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// };
-
-// exports.getUsers = async (req, res) => {
-//   try {
-//     const users = await User.find({ status: "active" }).select("-password");
-//     if (!users.length) {
-//       throw userError.NotFound();
-//     }
-//     res.status(200).json({
-//       success: true,
-//       data: users,
-//       message: "Users successfully found",
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error occured", error });
-//   }
-// };
+  res.status(200).json({
+    success: true,
+    message: "User successfully fetched",
+    content: foundUser,
+  });
+};
 
 // exports.getUser = async (req, res) => {
 //   try {
