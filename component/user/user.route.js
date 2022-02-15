@@ -20,6 +20,6 @@ userRouter.route("/login").post(validateLogin, validateRes, logInUser);
 userRouter.route("/get-all").get(getAllUsers);
 userRouter.route("/get-one").get(authorize, getAUser);
 userRouter.route("/edit").put(authorize, updateUser);
-// userRouter.route("/remove").delete(authorize, deleteUser);
+userRouter.route("/remove").delete(authorize, deleteUser);
 
 module.exports = userRouter;

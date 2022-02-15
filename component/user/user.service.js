@@ -11,10 +11,10 @@ exports.userExists = async ({ email }) => {
   return existedUser;
 };
 
-exports.findUser = async(query)=>{
+exports.findUser = async (query) => {
   const user = await User.findOne(query);
   return user;
-}
+};
 
 exports.userSignUp = async ({
   user,
@@ -123,18 +123,30 @@ exports.signInUser = async (email, password) => {
   };
 };
 
-
-exports.fetchAllUsers = async() =>{
-  const allUsers = await User.find({status : 'active'}).select('-password');
+exports.fetchAllUsers = async () => {
+  const allUsers = await User.find({ status: "active" }).select("-password");
   return allUsers;
-}
+};
 
-exports.fetchAUser = async(payload)=>{
-  const user = await User.findOne(payload).select('-password');
- return user;
-}
+exports.fetchAUser = async (payload) => {
+  const user = await User.findOne(payload).select("-password");
+  return user;
+};
 
-exports.editUser = async(payload,userObject) =>{
- const user = await User.findOneAndUpdate(payload,{$set:userObject}, {new : true})
- return user;
-}
+exports.editUser = async (payload, userObject) => {
+  const user = await User.findOneAndUpdate(
+    payload,
+    { $set: userObject },
+    { new: true }
+  );
+  return user;
+};
+
+exports.removeUser = async (payload) => {
+  const user = await User.findOneAndUpdate(
+    payload,
+    { $set: { status: "inactive" } },
+    { new: true }
+  );
+  return user;
+};

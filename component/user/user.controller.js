@@ -119,31 +119,6 @@ exports.getAUser = async (req, res) => {
 //   }
 // };
 
-// exports.updateUser = async (req, res) => {
-//   try {
-//     let email = req.user.email;
-//     const editObject = req.body;
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       throw userError.NotFound();
-//     }
-//     const query = email;
-//     const update = editObject;
-//     const updatedUser = await User.findOneAndUpdate(
-//       { email: query },
-//       { $set: update },
-//       { new: true }
-//     );
-//     res.status(202).json({
-//       success: true,
-//       message: "Successfully updated user",
-//       user: updatedUser,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Could not fetch user", error });
-//   }
-// };
-
 exports.updateUser = async (req, res) => {
   const email = req.user.email;
   const updateData = req.body;
@@ -165,4 +140,27 @@ exports.updateUser = async (req, res) => {
     message: "User successfully updated",
     content: updatedUser,
   });
+};
+
+exports.deleteUser = async (req, res) => {
+  const email = req.user.email;
+
+  const findUser = await userService.findUser({ email });
+  if (!findUser) {
+    throw userError.NotFound();
+  }
+
+  const query = email;
+
+  console.log("QUERY", query);
+  
+
+  const deletedUser = await userService.removeUser(query);
+
+  res.status(200).json({
+    success: true,
+    message: "User successfully updated",
+    content: deletedUser,
+  });
+  console.log(deletedUser)
 };
