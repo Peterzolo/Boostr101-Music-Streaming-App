@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
-const userRoute = require("./user/user.route");
-const SongRoute = require("./song/song.route");
+const { userModule } = require("./component");
+
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("tiny"));
 
-app.use("/api/users", userRoute);
-app.use("/api/songs", SongRoute);
+app.use("/api/users", userModule.route);
+// app.use("/api/songs", SongRoute);
 
 module.exports = app;

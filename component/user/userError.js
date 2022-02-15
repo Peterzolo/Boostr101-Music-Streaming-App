@@ -1,5 +1,5 @@
 const { UNPROCESSABLE_ENTITY, NOT_FOUND } = require("http-status-codes");
-const { AppError } = require("../utils/helper/errorFormatHelpers");
+const { AppError } = require("../../utils/helper/errorFormatHelpers");
 
 module.exports = {
   InvalidInput: (

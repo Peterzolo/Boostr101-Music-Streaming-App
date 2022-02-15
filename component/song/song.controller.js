@@ -4,6 +4,7 @@ exports.addSong = async (req, res) => {
   const body = req.body;
   try {
     const newSong = await new Song({
+      user: body.userId,
       title: body.title,
       artiste: body.artiste,
       song: body.song,

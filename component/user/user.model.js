@@ -19,17 +19,20 @@ const UserSchema = new mongoose.Schema(
     date: { type: Date, default: Date.now() },
     year: { type: Number },
     genre: { type: String, default: "" },
-    likedSongs: { type: Array, default: [] },
+    likedSongs: { type: Array, default: [] },   
     song: [
       {
         type: Schema.Types.ObjectId,
         ref: "song",
+        required: true
+
       },
     ],
     playLists: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "playList",
+        required: true
       },
     ],
     isAdmin: { type: Boolean, default: false },
@@ -59,4 +62,4 @@ UserSchema.pre("save", async function (next) {
 
 const User = mongoose.model("user", UserSchema);
 
-module.exports = { User };
+module.exports = User;
