@@ -94,16 +94,16 @@ exports.editSong = async (songId, userId, songObj) => {
   return updatedSong;
 };
 
-exports.deleteOneSong = async (id,userId) => {
-	let deletedSong = await Song.findOneAndUpdate({_id : id, landlord : userId},{$set:{status : 'inactive'}},{new: true});
-	return deletedSong;
+exports.deleteOneSong = async (id, userId) => {
+  let deletedSong = await Song.findOneAndUpdate(
+    { _id: id, landlord: userId },
+    { $set: { status: "inactive" } },
+    { new: true }
+  );
+  return deletedSong;
 };
 
-
 exports.fetchASong = async (id) => {
-  let singleSong = await Song.findOne({
-    id,
-    status: "active",
-  });
+  let singleSong = await Song.findOne({ _id: id, status: "active" });
   return singleSong;
 };

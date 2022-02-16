@@ -103,11 +103,12 @@ exports.postDeleteSong = async (req, res) => {
 
 exports.postGetASong = async (req, res) => {
   try {
-    let songId = req.params.id;
-    if (isEmpty(songId)) {
+    let id = req.params.id;
+
+    if (isEmpty(id)) {
       throw songError.NotFound("Please specify a song to delete");
     }
-    const song = await songService.fetchASong(songId);
+    const song = await songService.fetchASong(id);
     if (!song) {
       throw new Error("song not found");
     } else {
