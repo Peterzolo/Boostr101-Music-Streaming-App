@@ -46,34 +46,39 @@ exports.postEditSong = async (req, res) => {
   if (!errors.isEmpty()) {
     throw songError.InvalidInput(errors.mapped());
   }
+  try {
+    const { songId } = req.params;
+    let userId = req.user.id;
+    let updateData = req.body;
 
-  let updateData = req.body;
+ 
 
-  const { songId } = req.params;
+    if (isEmpty(songId)) {
+      throw songError.NotFound("Please specify a song to edit");
+    }
 
-  let landlord = req.userId;
+    const query = songId;
+    const user = userId;
+    const update = updateData;
 
-  if (isEmpty(songId)) {
-    throw songError.NotFound("Please specify a song to edit");
+  
+  
+    let editedSong = await songService.editSong(query, user, update);
+
+    console.log("Edited", editedSong);
+    if (!editedSong) {
+      throw songError.NotFound();
+    }
+    return res.status(200).send(
+      sendResponse({
+        message: "song updated",
+        content: editedSong,
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(500).json(error);
   }
-
-  const query = songId;
-  const landlordId = landlord;
-  const update = updateData;
-
-  let editedSong = await songService.editsong(query, landlordId, update);
-
-  console.log("Edited", editedSong);
-  if (!editedSong) {
-    throw songError.NotFound();
-  }
-  return res.status(200).send(
-    sendResponse({
-      message: "song updated",
-      content: editedSong,
-      success: true,
-    })
-  );
 };
 
 /////////////////////////////////////////////////////////////////////////
@@ -85,7 +90,7 @@ exports.postDeleteSong = async (req, res) => {
     let deleteData = req.body.status;
     const { id } = req.params;
     const landlord = req.userId;
-    const songDelete = await songService.deleteOnesong(
+    const songDelete = await songService.deleteOneSong(
       id,
       landlord,
       deleteData
@@ -100,17 +105,13 @@ exports.postDeleteSong = async (req, res) => {
   }
 };
 
-////////////////////////////////////////////////////////////////////
-
 exports.postGetASong = async (req, res) => {
   try {
     let songId = req.params.id;
-    let landlord = req.userId;
-
     if (isEmpty(songId)) {
       throw songError.NotFound("Please specify a song to delete");
     }
-    const song = await songService.fetchASong(songId, landlord);
+    const song = await songService.fetchASong(songId);
     if (!song) {
       throw new Error("song not found");
     } else {

@@ -77,35 +77,24 @@ exports.checkSongOwnership = async (userId) => {
   return true;
 };
 
-exports.fetchAllProperties = async (id) => {
+exports.fetchAllSongs = async (id) => {
   const song = await Song.find({ status: "active", landlord: id }).populate(
-    "landlord tenant",
+    "user",
     "-password"
   );
   return song;
 };
 
-// exports.editSong = async (id, SongObj) => {
-// 	await updateSong(query, SongObj);
-
-// 	const Song = await findAndPopulate(
-// 		{
-// 			...query
-// 		},
-// 		null,
-// 		'userId',
-// 		'name email avatar'
-// 	);
-
-// 	return Song;
-// };
-
-exports.editSong = async (id, userId, songObj) => {
+exports.editSong = async (songId, userId, songObj) => {
   const updatedSong = await Song.findOneAndUpdate(
-    { _id: id, landlord: userId },
+    { _id: songId, user: userId },
     { $set: songObj },
     { new: true }
   );
+
+  console.log('SONG-ID',songId);
+  console.log('USER-ID',userId);
+  console.log('UPDATE DATA',songObj);
   return updatedSong;
 };
 
@@ -118,11 +107,10 @@ exports.deleteOneSong = async (id, userId) => {
   return deletedSong;
 };
 
-exports.fetchASong = async (id, userId) => {
+exports.fetchASong = async (id) => {
   let singleSong = await Song.findOne({
-    _id: id,
-    landlord: userId,
+    id,
     status: "active",
-  }).populate("landlord, tenant, Song", "-password");
+  });
   return singleSong;
 };

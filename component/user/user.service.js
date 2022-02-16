@@ -109,6 +109,7 @@ exports.signInUser = async (email, password) => {
     name: user.name,
   });
 
+
   return {
     name: user.name,
     email: user.email,
@@ -116,6 +117,7 @@ exports.signInUser = async (email, password) => {
     status: user.status,
     token,
   };
+
 };
 
 exports.fetchAllUsers = async () => {
