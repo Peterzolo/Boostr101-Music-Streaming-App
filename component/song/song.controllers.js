@@ -51,8 +51,6 @@ exports.postEditSong = async (req, res) => {
     let userId = req.user.id;
     let updateData = req.body;
 
- 
-
     if (isEmpty(songId)) {
       throw songError.NotFound("Please specify a song to edit");
     }
@@ -61,8 +59,6 @@ exports.postEditSong = async (req, res) => {
     const user = userId;
     const update = updateData;
 
-  
-  
     let editedSong = await songService.editSong(query, user, update);
 
     console.log("Edited", editedSong);
@@ -88,11 +84,11 @@ exports.postEditSong = async (req, res) => {
 exports.postDeleteSong = async (req, res) => {
   try {
     let deleteData = req.body.status;
-    const { id } = req.params;
-    const landlord = req.userId;
+    const { songId } = req.params;
+    const userId = req.user.id;
     const songDelete = await songService.deleteOneSong(
-      id,
-      landlord,
+      songId,
+      userId,
       deleteData
     );
     if (!songDelete) {

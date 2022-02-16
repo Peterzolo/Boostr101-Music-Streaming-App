@@ -91,21 +91,14 @@ exports.editSong = async (songId, userId, songObj) => {
     { $set: songObj },
     { new: true }
   );
-
-  console.log('SONG-ID',songId);
-  console.log('USER-ID',userId);
-  console.log('UPDATE DATA',songObj);
   return updatedSong;
 };
 
-exports.deleteOneSong = async (id, userId) => {
-  let deletedSong = await Song.findOneAndUpdate(
-    { _id: id, landlord: userId },
-    { $set: { status: "inactive" } },
-    { new: true }
-  );
-  return deletedSong;
+exports.deleteOneSong = async (id,userId) => {
+	let deletedSong = await Song.findOneAndUpdate({_id : id, landlord : userId},{$set:{status : 'inactive'}},{new: true});
+	return deletedSong;
 };
+
 
 exports.fetchASong = async (id) => {
   let singleSong = await Song.findOne({

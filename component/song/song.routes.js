@@ -8,8 +8,8 @@ const {
   getAllSongs,
   postGetASong,
   postEditSong,
+  postDeleteSong,
 } = require("./song.controllers");
-const { fetchASong } = require("./song.services");
 const { validateSong, validateRes } = require("./song.validator");
 
 songRouter
@@ -19,5 +19,6 @@ songRouter
 songRouter.route("/get-all").get(getAllSongs);
 songRouter.route("/get-one/:songId").get(authorize, postGetASong);
 songRouter.route("/edit/:songId").put(authorize, postEditSong);
+songRouter.route("/remove/:songId").delete(authorize, postDeleteSong);
 
 module.exports = songRouter;

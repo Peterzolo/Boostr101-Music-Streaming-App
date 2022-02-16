@@ -122,6 +122,7 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
+  
   const email = req.user.email;
 
   const findUser = await userService.findUser({ email });
