@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const SongSchema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
-    reff: "user",
+    ref: "user",
     required: true,
   },
   title: {
@@ -25,7 +25,8 @@ const SongSchema = new mongoose.Schema({
   },
   img: {
     type: String,
-    required: true,
+    default:
+      "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/",
   },
   duration: {
     type: String,

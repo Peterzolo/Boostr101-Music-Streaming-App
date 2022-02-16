@@ -2,6 +2,7 @@ const userError = require("./userError");
 const bcrypt = require("bcryptjs");
 const userService = require("./user.service");
 const { validationResult } = require("express-validator");
+const User = require("./user.model");
 
 exports.registerUser = async (req, res) => {
   let {
@@ -81,43 +82,21 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getAUser = async (req, res) => {
-  let email = req.user.email;
-  const user = await userService.fetchAUser({ email });
-
-  if (!user) {
-    throw userError.NotFound();
+  try {
+    let email = req.user.email;
+    const user = await userService.userExisted(email);
+    if (user.length < 1) {
+      throw userError.NotFound();
+    }
+    res.status(200).json({
+      success: true,
+      message: "User successfully fetched",
+      content: user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "coild not fetch the user" });
   }
-  const foundUser = user;
-
-  res.status(200).json({
-    success: true,
-    message: "User successfully fetched",
-    content: foundUser,
-  });
 };
-
-// exports.deleteUser = async (req, res) => {
-//   try {
-//     let email = req.user.email;
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       throw userError.NotFound();
-//     }
-//     const query = email;
-//     const deletedUser = await User.findOneAndUpdate(
-//       { email: query },
-//       { $set: { status: "inactive" } },
-//       { new: true }
-//     );
-//     res.status(202).json({
-//       success: true,
-//       message: "Successfully deleted user",
-//       user: deletedUser,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Could not fetch user", error });
-//   }
-// };
 
 exports.updateUser = async (req, res) => {
   const email = req.user.email;
@@ -153,7 +132,6 @@ exports.deleteUser = async (req, res) => {
   const query = email;
 
   console.log("QUERY", query);
-  
 
   const deletedUser = await userService.removeUser(query);
 
@@ -162,5 +140,5 @@ exports.deleteUser = async (req, res) => {
     message: "User successfully updated",
     content: deletedUser,
   });
-  console.log(deletedUser)
+  console.log(deletedUser);
 };

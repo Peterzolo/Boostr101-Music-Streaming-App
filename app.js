@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
-const { userModule } = require("./component");
-
+const { userModule, songModule } = require("./component");
 
 const app = express();
 
@@ -17,6 +16,6 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 app.use("/api/users", userModule.route);
-// app.use("/api/songs", SongRoute);
+app.use("/api/songs", songModule.route);
 
 module.exports = app;
