@@ -84,7 +84,7 @@ exports.userSignUp = async ({
     playList: newUser.playList,
     isAdmin: newUser.isAdmin,
     status: newUser.status,
-    img,
+    img: newUser.img,
   };
 };
 
@@ -107,8 +107,8 @@ exports.signInUser = async (email, password) => {
     id: user._id,
     email: user.email,
     name: user.name,
+    isAdmin : user.isAdmin
   });
-
 
   return {
     name: user.name,
@@ -117,11 +117,13 @@ exports.signInUser = async (email, password) => {
     status: user.status,
     token,
   };
-
 };
 
-exports.fetchAllUsers = async () => {
-  const allUsers = await User.find({ status: "active" }).select("-password");
+exports.fetchAllUsers = async (id) => {
+  const allUsers = await User.find({
+    _id: id,
+    status: "active",
+  }).select("-password");
   return allUsers;
 };
 

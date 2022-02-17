@@ -13,12 +13,12 @@ const playListModel = require("./playList/playList.model");
 const componentModule = {
   userModule: {
     route: userRoute,
-    service: userService,
+    service: userService,   
     model: userModel,
   },
   songModule: {
     route: songRoute,
-    service: songService,
+    service: songService,    
     model: songModel,
   },
  playListModule: {

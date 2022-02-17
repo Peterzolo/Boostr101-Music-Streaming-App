@@ -19,6 +19,18 @@ exports.validateUser = [
     .withMessage("Password field cannot be empty")
     .isLength({ min: 8, max: 15 })
     .withMessage("Password must be bwteen 8 and 15 characters long"),
+  check("gender")
+    .not()
+    .isEmpty()
+    .withMessage("Password field cannot be empty"),
+  check("month")
+    .not()
+    .isEmpty()
+    .withMessage("Month field cannot be empty"),
+  check("year")
+    .not()
+    .isEmpty()
+    .withMessage("Password field cannot be empty"),
 ];
 exports.validateLogin = [
   check("email")

@@ -35,8 +35,10 @@ exports.postAddPlayList = async (req, res) => {
 };
 
 exports.getAllPlayLists = async (req, res) => {
-  let landlordId = req.userId;
-  const properties = await playListService.fetchAllPlayLists(landlordId);
+
+  let userId = req.user.id;
+  
+  const properties = await playListService.fetchAllPlayLists(userId);
 
   if (!properties.length) {
     throw playListError.NotFound();

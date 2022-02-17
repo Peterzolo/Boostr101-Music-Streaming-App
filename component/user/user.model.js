@@ -15,24 +15,23 @@ const UserSchema = new mongoose.Schema(
       enum: ["male", "female", "non-binary"],
       required: true,
     },
-    month: { type: String },
+    month: { type: String, required: true },
     date: { type: Date, default: Date.now() },
-    year: { type: Number },
+    year: { type: Number, required: true },
     genre: { type: String, default: "" },
-    likedSongs: { type: Array, default: [] },   
+    likedSongs: { type: Array, default: [] },
     song: [
       {
         type: Schema.Types.ObjectId,
         ref: "song",
-        required: true
-
+        required: true,
       },
     ],
     playLists: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "playList",
-        required: true
+        required: true,
       },
     ],
     isAdmin: { type: Boolean, default: false },

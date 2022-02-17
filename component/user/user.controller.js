@@ -21,13 +21,12 @@ exports.registerUser = async (req, res) => {
     isAdmin,
     status,
   } = req.body;
+
   try {
-    const userExist = await userService.userExists({ email });
-    console.log("userExist", userExist);
+    const userExist = await userService.userExisted({ email });
     if (userExist) {
       throw userError.UserExists();
     }
-
     const newUser = await userService.userSignUp({
       user,
       name,
@@ -44,8 +43,6 @@ exports.registerUser = async (req, res) => {
       isAdmin,
       status,
     });
-
-    //   const { password, ...others } = newUser._doc;
 
     res.status(200).send({
       success: true,
@@ -73,7 +70,8 @@ exports.logInUser = async (req, res) => {
 };
 
 exports.getAllUsers = async (req, res) => {
-  const users = await userService.fetchAllUsers();
+  let user = req.user.isAdmin;
+  const users = await userService.fetchAllUsers(user);
   res.status(200).json({
     success: true,
     message: "Users successfully fetched",
@@ -122,7 +120,6 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  
   const email = req.user.email;
 
   const findUser = await userService.findUser({ email });

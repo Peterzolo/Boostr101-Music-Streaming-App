@@ -7,7 +7,7 @@ const { userModule, songModule, playListModule } = require("./component");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Boostar101Play");
+  res.send("<htlm><h1>Welcome to Boostar101Play</h1></html>");
 });
 
 app.use(express.json());

@@ -60,10 +60,10 @@ exports.checkPlayListOwnership = async (userId) => {
   return true;
 };
 
-exports.fetchAllPlayLists = async (id) => {
+exports.fetchAllPlayLists = async (userId) => {
   const playList = await PlayList.find({
+    user: userId,
     status: "active",
-    landlord: id,
   }).populate("user", "-password");
   return playList;
 };
@@ -86,7 +86,11 @@ exports.deleteOnePlayList = async (id, userId) => {
   return deletedPlayList;
 };
 
-exports.fetchAPlayList = async (id,userId) => {
-  let singlePlayList = await PlayList.findOne({ _id: id, user : userId, status: "active" });
+exports.fetchAPlayList = async (id, userId) => {
+  let singlePlayList = await PlayList.findOne({
+    _id: id,
+    user: userId,
+    status: "active",
+  });
   return singlePlayList;
 };
