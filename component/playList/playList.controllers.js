@@ -75,7 +75,7 @@ exports.postEditPlayList = async (req, res) => {
       update
     );
 
-    console.log("Edited", editedPlayList);
+  
     if (!editedPlayList) {
       throw playListError.NotFound();
     }
