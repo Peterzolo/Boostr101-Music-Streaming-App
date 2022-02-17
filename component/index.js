@@ -6,6 +6,10 @@ const songRoute = require("./song/song.routes");
 const songService = require("./song/song.services");
 const songModel = require("./song/song.model");
 
+const playListRoute = require("./playList/playList.routes");
+const playListService = require("./playList/playList.services");
+const playListModel = require("./playList/playList.model");
+
 const componentModule = {
   userModule: {
     route: userRoute,
@@ -16,6 +20,11 @@ const componentModule = {
     route: songRoute,
     service: songService,
     model: songModel,
+  },
+ playListModule: {
+    route:playListRoute,
+    service:playListService,
+    model:playListModel,
   },
 };
 
