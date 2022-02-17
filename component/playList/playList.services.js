@@ -79,14 +79,14 @@ exports.editPlayList = async (playListId, userId, playListObj) => {
 
 exports.deleteOnePlayList = async (id, userId) => {
   let deletedPlayList = await PlayList.findOneAndUpdate(
-    { _id: id, landlord: userId },
+    { _id: id, user: userId },
     { $set: { status: "inactive" } },
     { new: true }
   );
   return deletedPlayList;
 };
 
-exports.fetchAPlayList = async (id) => {
-  let singlePlayList = await PlayList.findOne({ _id: id, status: "active" });
+exports.fetchAPlayList = async (id,userId) => {
+  let singlePlayList = await PlayList.findOne({ _id: id, user : userId, status: "active" });
   return singlePlayList;
 };

@@ -75,7 +75,6 @@ exports.postEditPlayList = async (req, res) => {
       update
     );
 
-  
     if (!editedPlayList) {
       throw playListError.NotFound();
     }
@@ -116,11 +115,12 @@ exports.postDeletePlayList = async (req, res) => {
 exports.postGetAPlayList = async (req, res) => {
   try {
     let id = req.params.id;
+    let user = req.user.id;
 
     if (isEmpty(id)) {
       throw playListError.NotFound("Please specify a playList to delete");
     }
-    const playList = await playListService.fetchAPlayList(id);
+    const playList = await playListService.fetchAPlayList(id, user);
     if (!playList) {
       throw new Error("playList not found");
     } else {
