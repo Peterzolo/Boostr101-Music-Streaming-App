@@ -20,12 +20,14 @@ exports.postAddPlayList = async (req, res) => {
     }
 
     const playListData = req.body;
-    const savedPlayList = await playListService.createPlayList(playListData);
+    const savedPlayListData = await playListService.createPlayList(
+      playListData
+    );
 
     return res.status(200).send(
       sendResponse({
         message: "condition created successfully",
-        content: savedPlayList,
+        content: savedPlayListData,
         success: true,
       })
     );
@@ -35,21 +37,24 @@ exports.postAddPlayList = async (req, res) => {
 };
 
 exports.getAllPlayLists = async (req, res) => {
+  try {
+    let userId = req.user.id;
 
-  let userId = req.user.id;
-  
-  const properties = await playListService.fetchAllPlayLists(userId);
+    const playLists = await playListService.fetchAllPlayLists(userId);
 
-  if (!properties.length) {
-    throw playListError.NotFound();
+    if (!playLists.length) {
+      throw playListError.NotFound();
+    }
+    return res.status(200).send(
+      sendResponse({
+        message: "playLists successfully loaded",
+        content: playLists,
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(500).json(error);
   }
-  return res.status(200).send(
-    sendResponse({
-      message: "playLists successfully loaded",
-      content: properties,
-      success: true,
-    })
-  );
 };
 
 exports.postEditPlayList = async (req, res) => {

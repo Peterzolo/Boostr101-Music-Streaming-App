@@ -77,8 +77,8 @@ exports.checkSongOwnership = async (userId) => {
   return true;
 };
 
-exports.fetchAllSongs = async (id) => {
-  const song = await Song.find({ status: "active", landlord: id }).populate(
+exports.fetchAllSongs = async () => {
+  const song = await Song.find({ status: "active"}).populate(
     "user",
     "-password"
   );

@@ -17,7 +17,7 @@ songRouter
   .post(authorize, validateSong, validateRes, postAddSong);
 
 songRouter.route("/get-all").get(getAllSongs);
-songRouter.route("/get-one/:id").get(postGetASong);
+songRouter.route("/get-one/:id").get(authorize, postGetASong);
 songRouter.route("/edit/:songId").put(authorize, postEditSong);
 songRouter.route("/remove/:songId").delete(authorize, postDeleteSong);
 

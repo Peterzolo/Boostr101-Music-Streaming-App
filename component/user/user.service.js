@@ -4,13 +4,6 @@ const jwt = require("jsonwebtoken");
 const userError = require("./userError");
 const bcrypt = require("bcryptjs");
 
-exports.userExisted = async (query) => {
-  const existedUser = await User.findOne(query, { status: "active" }).select(
-    "-password"
-  );
-  return existedUser;
-};
-
 exports.findUser = async (query) => {
   const user = await User.findOne(query);
   return user;
@@ -61,7 +54,7 @@ exports.userSignUp = async ({
   await newUser.save();
 
   const token = jwt.sign(
-    { email: newUser.email, id: newUser._id },
+    { email: newUser.email, id: newUser._id, isAdmin: newUser.isAdmin },
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );
@@ -107,7 +100,6 @@ exports.signInUser = async (email, password) => {
     id: user._id,
     email: user.email,
     name: user.name,
-    isAdmin : user.isAdmin
   });
 
   return {
@@ -128,7 +120,7 @@ exports.fetchAllUsers = async (id) => {
 };
 
 exports.fetchAUser = async (payload) => {
-  const user = await User.findOne(payload, { status: "active" }).select(
+  const user = await User.findOne({ payload, status: "active" }).select(
     "-password"
   );
   return user;

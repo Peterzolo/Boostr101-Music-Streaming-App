@@ -64,7 +64,7 @@ exports.fetchAllPlayLists = async (userId) => {
   const playList = await PlayList.find({
     user: userId,
     status: "active",
-  }).populate("user", "-password");
+  });
   return playList;
 };
 
@@ -74,7 +74,7 @@ exports.editPlayList = async (playListId, userId, playListObj) => {
     { $set: playListObj },
     { new: true }
   );
-  return updatedPlayList;
+  return updatedPlayList;   
 };
 
 exports.deleteOnePlayList = async (id, userId) => {

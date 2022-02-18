@@ -23,7 +23,7 @@ exports.registerUser = async (req, res) => {
   } = req.body;
 
   try {
-    const userExist = await userService.userExisted({ email });
+    const userExist = await userService.findUser({ email });
     if (userExist) {
       throw userError.UserExists();
     }
@@ -70,8 +70,12 @@ exports.logInUser = async (req, res) => {
 };
 
 exports.getAllUsers = async (req, res) => {
+
   let user = req.user.isAdmin;
-  const users = await userService.fetchAllUsers(user);
+
+  console.log('ADMIN',user)
+  
+  const users = await userService.fetchAllUsers();
   res.status(200).json({
     success: true,
     message: "Users successfully fetched",
@@ -79,20 +83,26 @@ exports.getAllUsers = async (req, res) => {
   });
 };
 
+
 exports.getAUser = async (req, res) => {
   try {
     let email = req.user.email;
-    const user = await userService.userExisted(email);
-    if (user.length < 1) {
+
+    const user = await userService.findUser({ email });
+    if (!user) {
       throw userError.NotFound();
     }
+
+    const userEmail = email;
+    const foundUser = await userService.fetchAUser({ userEmail });
+
     res.status(200).json({
       success: true,
-      message: "User successfully fetched",
-      content: user,
+      message: "user loaded",
+      content: foundUser,
     });
   } catch (error) {
-    res.status(500).json({ message: "coild not fetch the user" });
+    res.status(500).json("unable to load user");
   }
 };
 
@@ -107,8 +117,6 @@ exports.updateUser = async (req, res) => {
 
   const query = email;
   const update = updateData;
-  console.log("QUERY", query);
-  console.log("UPDATE", update);
 
   const updatedUser = await userService.editUser(query, update);
 
@@ -128,8 +136,6 @@ exports.deleteUser = async (req, res) => {
   }
 
   const query = email;
-
-  console.log("QUERY", query);
 
   const deletedUser = await userService.removeUser(query);
 
